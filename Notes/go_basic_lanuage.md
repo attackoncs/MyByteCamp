@@ -1,3 +1,4 @@
+有幸参加了字节跳动举办的青训营活动，主要是go语言的编程实践，我将会整理课程的笔记和总结，欢迎关注！
 # 1Go语言简介
 
 由于Go语言有语法简单、高性能等特点，因此国内外各大公司如谷歌、腾讯、字节等都在使用，特别是字节全面拥抱Go，原因是最初因性能问题将Python换成Go，而Go学习简单，性能高，且部署简单。总的来说Go语言特性如下：
@@ -124,11 +125,11 @@ time包包含时间处理各种函数，用Date构造带时区时间，Now获取
 
 os包包含进程处理，Args得到命令参数，Getenv读环境变量，Command执行命令
 
-## 3实战项目
+# 3实战项目
 
 实战项目主要是为巩固基础语法，并且是逐步开发、快速迭代改进，很有参考价值
 
-### 猜数字游戏
+## 猜数字游戏
 
 设置随机数种子，随机生成100以内的数，提示用户输入，并和用户输入的数据比大小，根据大小提示信息，不断循环，最终猜正确才退出循环。通过该例子巩固变量循环、函数控制流和错误处理等知识
 
@@ -180,7 +181,7 @@ func main() {
 
 ```
 
-### 简单字典
+## 简单字典
 
 抓包彩云小译翻译的api，并拷贝curl命令，通过[网站](https://curlconverter.com/)转换成go代码，并拷贝服务端响应的json数据，通过[网站](https://oktools.net/json2go)生成go结构体，然后解析对应的字段输出，通过该例子学习发送http请求、解析json格式、使用代码生成提高开发效率等
 
@@ -302,7 +303,7 @@ example: simpleDict hello
 
 ```
 
-### proxy
+## proxy
 
 通过该例子，学习socks5协议工作原理，包含四个阶段：
 
@@ -310,8 +311,8 @@ example: simpleDict hello
 2. 认证阶段：开始认证流程，不概述
 3. 请求阶段：认证通过后浏览器向socks5服务器发请求，代理服务器收到响应后和服务器建立连接，然后一个响应
 4. replay阶段：浏览器发送请求，代理服务器接收到请求转发给服务器，接收到响应转发给浏览器
+![在这里插入图片描述](https://img-blog.csdnimg.cn/aecf2440555c4cbbbb82612e779fbcb7.png)
 
-![image-20220509150042975](C:/Users/yl/AppData/Roaming/Typora/typora-user-images/image-20220509150042975.png)
 
 ```go
 package main
@@ -501,6 +502,6 @@ func connect(reader *bufio.Reader, conn net.Conn) (err error) {
 
 ```
 
-## 4代码示例
+# 4代码示例
 
 以上语法和实战代码示例，都能再[这里](https://github.com/attackoncs/MyByteCamp)找到

@@ -1,3 +1,4 @@
+这是字节青训营的第二课：工程实践的笔记和总结
 # 1语言进阶
 
 ## 并发
@@ -9,31 +10,21 @@ go可以充分发挥多核优势，高效运行，介绍原理之前，先介绍
 + 进程：资源管理的最小单位，进程虚拟地址空间分成用户和内核空间
 + 线程：资源调度最小单位，再内核态，共享进程中的资源，比进程轻量级
 + 协程：再用户态的轻量级线程，调度和切换都在用户态，因此高效
-
-![image-20220509180825891](C:/Users/yl/AppData/Roaming/Typora/typora-user-images/image-20220509180825891.png)
-
+![在这里插入图片描述](https://img-blog.csdnimg.cn/1923463d6d8e4e0cacfe9da3a44beaf3.png)
 ### goroutine
 
 go中的协程goroutine使用简单，只需在调用函数（普通或匿名函数）前加go关键字，没有返回值，因此通过channel通信。提倡通过**通信共享内存**，而不是通过共享内存而实现通信。
-
-![image-20220509180118669](C:/Users/yl/AppData/Roaming/Typora/typora-user-images/image-20220509180118669.png)
-
-
-
+![在这里插入图片描述](https://img-blog.csdnimg.cn/afc6088cfb034becb9ebc7a47bc806ca.png)
 由于goroutine是异步执行，因此需要同步，否则主程序退出而goroutine还没执行完，同步的主要方式有：Sleep、Channel、Sync。若知道每个协程执行时间，则可Sleep等待所有协程执行完再退出，实际不常用，常用后两者
 
 ### Channel
 
 go是CSP并发模型，没有对内存加减锁减少性能消耗，chanel可让协程发送特定值到另外协程，遵循FIFO且保证收发顺序。通过make创建，分无缓冲（未指定大小）和有缓冲，前者会阻塞直到接收或发送，使用“<-”发送和接收。常用for range或if ok判断channel关闭时机，当然defer close不用判断，图是生产者-消费者模型
-
-![image-20220509182722766](C:/Users/yl/AppData/Roaming/Typora/typora-user-images/image-20220509182722766.png)
-
+![在这里插入图片描述](https://img-blog.csdnimg.cn/802f99c05a9840d4b56d2b4db45d329a.png)
 ### Sync
 
 Sync保重WaitGroup内部维护计数器，通过主程序Add和协程Done增加较少计数器，主程序Wait阻塞等待任务执行完，进行同步，针对只执行一次场景使用Once
-
-![image-20220509183407491](C:/Users/yl/AppData/Roaming/Typora/typora-user-images/image-20220509183407491.png)
-
+![在这里插入图片描述](https://img-blog.csdnimg.cn/516501324b2b4c609858c88052f58180.png)
 ## 总结
 
 协程：通过高效的调度模型实现高并发；channel：通过通信实现共享内存；sync：实现并发安全操作和携程间的同步
@@ -54,33 +45,21 @@ Go的依赖管理经过GOPATH、Go Vendor、Go Module，GOPAHT无法实现包的
 ### 依赖管理三要素
 
 1. 描述依赖的配置文件
-
-![image-20220509184909390](C:/Users/yl/AppData/Roaming/Typora/typora-user-images/image-20220509184909390.png)
-
+![在这里插入图片描述](https://img-blog.csdnimg.cn/b00f0c7c78964972b6b9077978971927.png)
 依赖版本包括语义化版本和基于commit伪版本版本
-
-![image-20220509185135396](C:/Users/yl/AppData/Roaming/Typora/typora-user-images/image-20220509185135396.png)
-
+![在这里插入图片描述](https://img-blog.csdnimg.cn/7d2201e0d4de4fa092e493b9d126a8e8.png)
 语义版本中的MAJOR不同表示API不兼容，即使同个库，MAJOR不同也被认为是不同模块，MINOR通常是新增函数或功能，path一般是修复bug。基于commit则是commit的时间戳和12位的哈希前缀校验码，每次commit就默认生成一个版本号
-
-![image-20220509200131126](C:/Users/yl/AppData/Roaming/Typora/typora-user-images/image-20220509200131126.png)
-
+![在这里插入图片描述](https://img-blog.csdnimg.cn/e3a650547971443f8e78a57bf9d0ce2d.png)
 indirect表示间接依赖
-
-![image-20220509200722048](C:/Users/yl/AppData/Roaming/Typora/typora-user-images/image-20220509200722048.png)
-
+![在这里插入图片描述](https://img-blog.csdnimg.cn/0a7cd644b3bb4a74bfdf86996cc5f4d3.png)
 go是11版本提出go module，主版本大于等于2的包，应在路径中体现出版本，而很多包在此之前打上更高版本的tag，为兼容这些包会在版本号后奖赏+incompatible，如图上因该是lib6/v3 v3.2.0，若未遵守则打上incompatible标签
-
-![image-20220509201146421](C:/Users/yl/AppData/Roaming/Typora/typora-user-images/image-20220509201146421.png)
-
+![在这里插入图片描述](https://img-blog.csdnimg.cn/0c20ebf3600747148d66781c288f1fb1.png)
 若同包不同版本，则选择最低兼容版本
 
 2. 管理依赖库的中心仓库
 
 go proxy解决无法保证构建稳定性、依赖可用性、第三方托管平台压力的问题，它是服务站点，会缓存源站中软件内容，构建时直接从proxy站点拉取依赖
-
-![image-20220509201824825](C:/Users/yl/AppData/Roaming/Typora/typora-user-images/image-20220509201824825.png)
-
+![在这里插入图片描述](https://img-blog.csdnimg.cn/f077393e32e74a979096c81b4b9895c8.png)
 GOPROXY环境变量中是go proxy站点URL列表，按顺序查找，direct表示源站下载
 
 3. 本地工具
@@ -92,9 +71,7 @@ go get获取包，go mod初始化（init）、下载（download）、增加减�
 测试可极大避免事故发生，是避免事故最后一道屏障，从上到下是回归测试、集成测试、单元测试，覆盖率逐层变大成本逐层降低
 
 ## 单元测试
-
-![image-20220509204331176](C:/Users/yl/AppData/Roaming/Typora/typora-user-images/image-20220509204331176.png)
-
+![在这里插入图片描述](https://img-blog.csdnimg.cn/c999bcead4a34d62a95bf860dd740a15.png)
 单元测试包括：输入、测试单元、输出三部分，单元包括函数、模块等，通过校对保证代码功能和预期相同，既能保证质量又能提升效率（定位和修复bug）,常用测试包assert，单元测试规则：
 
 + 测试文件以_test.go结尾
@@ -102,11 +79,7 @@ go get获取包，go mod初始化（init）、下载（download）、增加减�
 + 测试函数以Test开头且连接的首字母大写
 
 + 初始化逻辑放在TestMain中
-
-  
-
-  ![image-20220509204805964](C:/Users/yl/AppData/Roaming/Typora/typora-user-images/image-20220509204805964.png)
-
+![在这里插入图片描述](https://img-blog.csdnimg.cn/5d70dccd2a5544dc819640f79d1dc5ff.png)
 单元测试覆盖率指代码执行量和总代码量间的比率，主要包括分支、行、方法、类四个指标，实际项目一般要求50-60%覆盖率，资金型重要服务需达到80%，为提升覆盖率：
 
 + 测试分支相互独立、全面覆盖
@@ -133,21 +106,15 @@ go get获取包，go mod初始化（init）、下载（download）、增加减�
 ### 需求用例
 
 主要是用户浏览话题内容和回帖列表，包含主题内容和回帖列表，想象每个实体的属性及它们之间的联系
-
-![image-20220509212308404](C:/Users/yl/AppData/Roaming/Typora/typora-user-images/image-20220509212308404.png)
-
+![在这里插入图片描述](https://img-blog.csdnimg.cn/f3080c3243194c7cb12da54f1ba38393.png)
 ### ER图
 
 思考实体的属性及之间的联系，对后续开发提供清晰思路
-
-![image-20220509212447612](C:/Users/yl/AppData/Roaming/Typora/typora-user-images/image-20220509212447612.png)
-
+![在这里插入图片描述](https://img-blog.csdnimg.cn/d5b38b281c204dfca3954fed41cc97bb.png)
 ### 分层结构 
 
 代码结构采用分层结构设计，包括数据层、逻辑层、视图层。数据层封装外部数据增删改查，对逻辑层屏蔽底层数据差异，即不管底层是文件还是数据库还是微服务，同时对逻辑层接口模型不变。逻辑层处理核心业务逻辑并上送给视图层。视图层负责交互，以视图形式返回给客户端
-
-![image-20220509213438571](C:/Users/yl/AppData/Roaming/Typora/typora-user-images/image-20220509213438571.png)
-
+![在这里插入图片描述](https://img-blog.csdnimg.cn/036408917c334032a2b12f911831e3a3.png)
 ### 组件工具
 
 高性能web框架gin v1.3.0版，主要涉及路由分发，使用go module依赖管理，按reposity、service、controller逐步实现
@@ -155,13 +122,9 @@ go get获取包，go mod初始化（init）、下载（download）、增加减�
 ### Repository
 
 定义Topic和Post结构体如下，如何高效查询
-
-![image-20220509214046408](C:/Users/yl/AppData/Roaming/Typora/typora-user-images/image-20220509214046408.png)
-
+![在这里插入图片描述](https://img-blog.csdnimg.cn/4a279ca64c024e38a6feca653e09d4d0.png)
 为简单使用map实现内存索引，用文件元数据初始化全局内存索引，可o(1)查找
-
-![image-20220509214325670](C:/Users/yl/AppData/Roaming/Typora/typora-user-images/image-20220509214325670.png)
-
+![在这里插入图片描述](https://img-blog.csdnimg.cn/3b10ba6927be4541a6026ebb479cb55e.png)
 迭代遍历数据行，转为结构体存储到map中
 
 ```go
@@ -216,9 +179,7 @@ func (f *QueryPageInfoFlow) Do() (*PageInfo, error) {
 ```
 
 prepreinfo方法中，话题和回帖信息的获取都依赖tipicid，这样两者就可并行执行，提高效率，实际开发中要思考流程是否可并发，从而提高并发
-
-![image-20220509215735509](C:/Users/yl/AppData/Roaming/Typora/typora-user-images/image-20220509215735509.png)
-
+![在这里插入图片描述](https://img-blog.csdnimg.cn/453d16ed4764403ba5bbaabed37d9f14.png)
 ### Controller
 
 定义PageData结构体作为view对象，通过code和msg打包业务状态信息，data承载业务实体信息
@@ -277,7 +238,10 @@ func main() {
 }
 ```
 
+### 测试和运行
+
+本地go run运行，并使用curl请求服务暴露的接口
+![在这里插入图片描述](https://img-blog.csdnimg.cn/4c816a28277f4e7d8e3749b008723279.png)
 # 5 代码示例
 
 以上语法和实战代码示例，都能再[这里](https://github.com/attackoncs/MyByteCamp/tree/main/Code/go-project-example-0)找到
-
