@@ -1,9 +1,7 @@
 这是字节青训营第三课：高质量编程与性能调优实战的笔记和总结
 
 # 概要
-
-![image-20220516155127481](C:/Users/yl/AppData/Roaming/Typora/typora-user-images/image-20220516155127481.png)
-
+![在这里插入图片描述](https://img-blog.csdnimg.cn/08afd2526b0645e986aeb82df22f78e9.png)
 # 准备
 
 - 尝试使用 test 命令，编写并运行简单[测试](https://go.dev/doc/tutorial/add-a-test)
@@ -45,41 +43,28 @@
 + 注释应该解释代码作用，适合注释公共符合，参考官方[代码](https://github.com/golang/go/blob/master/src/os/file.go#L313)
 + 注释应该解释代码如何做的，适合注释方法，参考官方[代码](https://github.com/golang/go/blob/master/src/net/http/client.go#L678)
 + 注释应该解释代码实现的原因，解释代码外部因素，参考官方[代码](https://github.com/golang/go/blob/master/src/net/http/client.go#L521)
-
 + 注释应该解释代码什么情况会出错
 + 包中每个公共符合：变量、常量、函数及结构体都要注释，参考官方[代码](https://github.com/golang/go/blob/master/src/io/io.go#L455)
 
-
 #### 场景一
-
-![image-20220516113722630](C:/Users/yl/AppData/Roaming/Typora/typora-user-images/image-20220516113722630.png)
-
+![在这里插入图片描述](https://img-blog.csdnimg.cn/8be14e97e3394719bf0328dfb35b56e6.png)
 如图，Open应解释作用，IsTableFull解释则无必要，因为已见名知意
 
 #### 场景二
-
-![image-20220516113753689](C:/Users/yl/AppData/Roaming/Typora/typora-user-images/image-20220516113753689.png)
-
+![在这里插入图片描述](https://img-blog.csdnimg.cn/52c84b4aa0bb4fa896280e54d25db84c.png)
 第一个注释因逻辑较为复杂，需要注释，而第二个则完全没必要
 
 #### 场景三
-
-![image-20220516113958990](C:/Users/yl/AppData/Roaming/Typora/typora-user-images/image-20220516113958990.png)
-
+![在这里插入图片描述](https://img-blog.csdnimg.cn/c088fec2bb97482499fc23d7de9690e1.png)
 如图shouldRedirect=false若脱离上下文后很难理解，需注释说明原因
 
 #### 场景四
-
-![image-20220516114240548](C:/Users/yl/AppData/Roaming/Typora/typora-user-images/image-20220516114240548.png)
-
+![在这里插入图片描述](https://img-blog.csdnimg.cn/c495ab7ce96a4a0b9584097ac61e1a65.png)
 注释应提醒潜在限制条件或无法处理情况，让使用者无需了解细节
 
 #### 场景五
-
-![image-20220516114545754](C:/Users/yl/AppData/Roaming/Typora/typora-user-images/image-20220516114545754.png)
-
-![image-20220516114905948](C:/Users/yl/AppData/Roaming/Typora/typora-user-images/image-20220516114905948.png)
-
+![在这里插入图片描述](https://img-blog.csdnimg.cn/792bb567a4ed47d3b907b6a6f5eb5b1e.png)
+![在这里插入图片描述](https://img-blog.csdnimg.cn/c46a21c2f6ce442e9ba9a046ac0f8f71.png)
 **包中每个公共符号始如变量、常量、函数及结构体终要注释**，唯一例外是不要注释实现接口的方法
 
 #### 小结
@@ -96,13 +81,9 @@
 #### 变量
 
 + 简洁胜于冗长
-
-![image-20220516120022895](C:/Users/yl/AppData/Roaming/Typora/typora-user-images/image-20220516120022895.png)
-
+![在这里插入图片描述](https://img-blog.csdnimg.cn/46233c78727a41d7b87ad255460ca67e.png)
 index和i仅作用于for，index并未增加对程序的理解
-
-![image-20220516120223199](C:/Users/yl/AppData/Roaming/Typora/typora-user-images/image-20220516120223199.png)
-
+![在这里插入图片描述](https://img-blog.csdnimg.cn/9b3760f77fec4952a5afbb35783075b3.png)
 deadline指截止时间，函数作用更明确
 
 - 缩略词全大写，如HTTP不要Http，但当其位于变量开头不导出时用全小写，如xmlHTTPRequest代替XMLHTTPRequest
@@ -130,17 +111,11 @@ deadline指截止时间，函数作用更明确
 ### 控制流程
 
 + 避免嵌套，保持正常流程清晰
-
-![image-20220516124608566](C:/Users/yl/AppData/Roaming/Typora/typora-user-images/image-20220516124608566.png)
-
+![在这里插入图片描述](https://img-blog.csdnimg.cn/e2566e78f34f486aa55f7dd94a0ee93f.png)
 + 尽量保持正常代码路径为最小缩进，参考官方[代码](https://github.com/golang/go/blob/master/src/bufio/bufio.go#L277)
-
-![image-20220516132503789](C:/Users/yl/AppData/Roaming/Typora/typora-user-images/image-20220516132503789.png)
-
+![在这里插入图片描述](https://img-blog.csdnimg.cn/5c4abafb2e284595b0489ad54b48009b.png)
 嵌套使逻辑理复杂，调整后简单清晰，易于新增代码
-
-![image-20220516132602548](C:/Users/yl/AppData/Roaming/Typora/typora-user-images/image-20220516132602548.png)
-
+![在这里插入图片描述](https://img-blog.csdnimg.cn/943c26e37e6e4999aaa417a97672c1fc.png)
 + 互斥条件表驱动
 
 如有并列的if嵌套逻辑：
@@ -196,23 +171,16 @@ fmt.Errorf用%w将错误关联到错误链，使每层调用方补充自己上�
 + **errors.New()**：创建匿名变量直接表示错误，参考官方[代码](https://github.com/golang/go/blob/master/src/net/http/client.go#L802)
 
 + **errors.Is()**：判断错误断言，不同==，它能判断错误链中是否包含它，参考官方[代码](https://github.com/golang/go/blob/master/src/cmd/go/internal/modfetch/sumdb.go#L208)
-
-![image-20220516134543214](C:/Users/yl/AppData/Roaming/Typora/typora-user-images/image-20220516134543214.png)
-
+![在这里插入图片描述](https://img-blog.csdnimg.cn/ed76030f708442f497e31699c96206b2.png)
 + **errors.As()**：从错误链中提取想要的错误，参考官方[代码](https://github.com/golang/go/blob/master/src/errors/wrap_test.go#L255)
-
-![image-20220516134607997](C:/Users/yl/AppData/Roaming/Typora/typora-user-images/image-20220516134607997.png)
-
+![在这里插入图片描述](https://img-blog.csdnimg.cn/5df9dc115c0f47f98f7647701b5927e4.png)
 #### panic和recover
 
 + panic：不推荐用panic，因为会向上传递到调用栈顶，若协程中所有被defer函数都不包含 recover 就会造成程序崩溃，启动阶段发生不可逆转错误时，可在 init 或 main 中用 panic，参考[代码](https://github.com/Shopify/sarama/blob/main/examples/consumergroup/main.go#L94)
 
-![image-20220516135436991](C:/Users/yl/AppData/Roaming/Typora/typora-user-images/image-20220516135436991.png)
-
+![在这里插入图片描述](https://img-blog.csdnimg.cn/2a2734c943f14d0d9839544be84717a5.png)
 + recover只能在被defer的函数中使用，嵌套无法生效，只在当前 goroutine 生效，参考官方[代码](https://github.com/golang/go/blob/master/src/fmt/scan.go#L247)，若需要更多上下文信息，可recover后在log中记录当前调用栈，参考官方[代码](https://github.com/golang/website/blob/master/internal/gitfs/fs.go#L228)
-
-![image-20220516135537749](C:/Users/yl/AppData/Roaming/Typora/typora-user-images/image-20220516135537749.png)
-
+![在这里插入图片描述](https://img-blog.csdnimg.cn/c0b3eb2cfcf8493f9affaa1b81420612.png)
 ## 性能优化
 
 满足正确性、可靠性、健壮性、可读性等质量前提下，设法提高程序的效率，性能对比测试代码，可参考[代码](https://github.com/RaymondCode/go-practice)
@@ -220,13 +188,9 @@ fmt.Errorf用%w将错误关联到错误链，使每层调用方补充自己上�
 ### benchmark测试
 
 性能需实际数据衡量，Go内置性能评估工具
-
-![image-20220516135933452](C:/Users/yl/AppData/Roaming/Typora/typora-user-images/image-20220516135933452.png)
-
+![在这里插入图片描述](https://img-blog.csdnimg.cn/55118a57b7454ba4830ec4a5f7edfd76.png)
 结果
-
-![image-20220516135958879](C:/Users/yl/AppData/Roaming/Typora/typora-user-images/image-20220516135958879.png)
-
+![在这里插入图片描述](https://img-blog.csdnimg.cn/7fd0e823fa464c0f81f6659a85d41eb8.png)
 ### slice
 
 + 参考[博客](https://ueokande.github.io/go-slice-tricks/)
@@ -236,40 +200,31 @@ fmt.Errorf用%w将错误关联到错误链，使每层调用方补充自己上�
   + append后长度>cap时，分配更大区域容纳新底层数组
 + 在已有切片的基础上切片，若只用很小一段，但底层数组在内存仍占用大量空间无法释放，推荐用 copy 替代 re-slice
 
-![image-20220516141608520](C:/Users/yl/AppData/Roaming/Typora/typora-user-images/image-20220516141608520.png)
-
+![在这里插入图片描述](https://img-blog.csdnimg.cn/c985bacdebd14510a62b9dc65ab39794.png)
 ### map
 
 - 不断向map添加元素会触发扩容
 - 根据实际需求提前预估好需要的空间
 - 提前分配好空间可以减少内存拷贝和 Rehash
-
-![image-20220516141742442](C:/Users/yl/AppData/Roaming/Typora/typora-user-images/image-20220516141742442.png)
-
+![在这里插入图片描述](https://img-blog.csdnimg.cn/ce528fe73c9e49e28010f6292b08338d.png)
 ### 字符串
 
 - 常见的字符串拼接方式：strings.Builder、bytes.Buffer、+，效率递减
 - 字符串在Go中是不可变类型，占用内存大小固定，用+拼接字符串会生成新的字符串，会开辟两字符串大小之和的新的空间，另两个内存是以倍数申请，底层都是[]byte 数组，bytes.Buffer 转化字符串时重新申请一块空间，存放生成的字符串，而 strings.Builder直接将底层[]byte 转换成字符串类型返回
-
-![image-20220516142648934](C:/Users/yl/AppData/Roaming/Typora/typora-user-images/image-20220516142648934.png)
-
+![在这里插入图片描述](https://img-blog.csdnimg.cn/ef544f716afb41a387047dd3d31563d7.png)
 + 字符串同样支持预分配，可进一步提高拼接性能
 
 ### 空结构体的使用
 
 + 空结构体不占内存仅作为占位符
 + 可以作为map实现简单set
-
-![image-20220516142946389](C:/Users/yl/AppData/Roaming/Typora/typora-user-images/image-20220516142946389.png)
-
+![在这里插入图片描述](https://img-blog.csdnimg.cn/1f96541f037143eb926c7537ec91f3ad.png)
 ### atomic包
 
 - 锁通过OS实现，属于系统调用，atomic通过硬件实现更高效
 - sync.Mutex 应该用来保护一段逻辑，不仅仅用于保护一个变量
 - 非数值可用 atomic.Value，它能承载一个interface{}
-
-![image-20220516143302653](C:/Users/yl/AppData/Roaming/Typora/typora-user-images/image-20220516143302653.png)
-
+![在这里插入图片描述](https://img-blog.csdnimg.cn/28abfc2c90104f3f99e238e5d56ad773.png)
 ### 总结
 
 - 避免常见的性能陷阱可保证大部分程序的性能
@@ -293,9 +248,7 @@ fmt.Errorf用%w将错误关联到错误链，使每层调用方补充自己上�
 
   - pprof 是用于可视化和分析性能分析数据的工具
   - 可以知道应用在什么地方耗费了多少 CPU、memory 等运行指标
-
-![image-20220516145658070](C:/Users/yl/AppData/Roaming/Typora/typora-user-images/image-20220516145658070.png)
-
+![在这里插入图片描述](https://img-blog.csdnimg.cn/7cdfa3b8d8124879b7ec7ae45862c305.png)
 + pprof实践
 
   - 排查 CPU 问题
@@ -322,30 +275,21 @@ fmt.Errorf用%w将错误关联到错误链，使每层调用方补充自己上�
 ### pprof 的采样过程和原理
 
 #### CPU 采样
-
-![image-20220516150246286](C:/Users/yl/AppData/Roaming/Typora/typora-user-images/image-20220516150246286.png)
-
-![image-20220516150336461](C:/Users/yl/AppData/Roaming/Typora/typora-user-images/image-20220516150336461.png)
-
+![在这里插入图片描述](https://img-blog.csdnimg.cn/00cef922aa144441abdd15fc309e2276.png)
+![在这里插入图片描述](https://img-blog.csdnimg.cn/fb1875f42d6c4836be978e309fb34574.png)
 启动采样时，进程向OS注册一个定时器，OS会每10ms向进程发送一个SIGPROF信号，进程接收到信号后就对当前调用栈进行记录。同时进程启动一个写缓冲的goroutine，它每隔100ms从进程中读取已记录的堆栈信息，并写入到输出流。当采样停止时，进程向OS取消定时器，不再接收信号，写缓冲读取不到新的堆栈时，结束输出。
 
 #### 堆内存采样
-
-![image-20220516150834598](C:/Users/yl/AppData/Roaming/Typora/typora-user-images/image-20220516150834598.png)
-
+![在这里插入图片描述](https://img-blog.csdnimg.cn/6d3ad9fe04864533a59b66d9987fbc45.png)
 堆内存采样在实现上依赖内存分配器的记录，一些其他的内存分配，如栈内存、一些更底层使cgo调分配的内存，不会被采样记录，采样率是默认每分配512KB内存采样一次，采样率可以调整，设为1则每次分配都会记录。与CPU和goroutine都不同的是，内存的采样是个持续的过程，它记录从程序运行起的所有分配或释放的内存大小和对象数量，并在采样时谝历这些结果进行汇总
 
 #### 协程和系统线程采样
-
-![image-20220516151420613](C:/Users/yl/AppData/Roaming/Typora/typora-user-images/image-20220516151420613.png)
-
+![在这里插入图片描述](https://img-blog.csdnimg.cn/49215eb7c9dd4fa0ab29500222d06dd5.png)
 Goroutie采样会记录所有用户发起，也就是入口不是runtime开头的goroutine,以及main所在goroutine的信息和创建这些goroutine的调用栈
 它们都是会在STW后，漏历所有goroutine/线程的列表〔图中的m就是GMP模型中的m，在golang中和线程对应）并输出堆栈，最后STW继续运行。该采样是立刻触发的全量记录，可以比较两个时间点的差值来得到某一时间段的指标
 
 #### 阻塞操作和锁竞争采样
-
-![image-20220516152319525](C:/Users/yl/AppData/Roaming/Typora/typora-user-images/image-20220516152319525.png)
-
+![在这里插入图片描述](https://img-blog.csdnimg.cn/c6b0d3a7a6d44d6ca833d2305b0888cb.png)
 两指标在流程和原理上相似，不过指标的采样率含义不同：
 
 + 阻塞操作的采样率是个阈值，超过阈值时间的阻塞操作才会被记录，1为每次操作都会记录。炸弹程序的main里面设置rate=1
@@ -421,11 +365,9 @@ Goroutie采样会记录所有用户发起，也就是入口不是runtime开头�
 
 - 从[链接](https://github.com/golang/go/tree/master/src)中选择感兴趣的包，看看官方代码是如何编写的
 
-
 - 使用 Go 进行并发编程时有哪些性能陷阱或者优化手段？
 
 - 真实线上环境中，遇到的性能问题各种各样，搜索下知名公司（如[uber](https://eng.uber.com/category/oss-projects/oss-go/)）的官方公众号或者博客，里面有哪些性能优化的案例？
-
 
 - Go 语言本身在持续更新迭代，每个版本在性能上有哪些重要的优化点？
 
@@ -446,4 +388,3 @@ Goroutie采样会记录所有用户发起，也就是入口不是runtime开头�
 - Go 语言高性能编程，博主总结了 Go 编程的一些性能[建议](https://geektutu.com/post/high-performance-go.html)
 
 - Google 其他编程语言[编码规范](https://zh-google-styleguide.readthedocs.io/en/latest/)
-
